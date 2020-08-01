@@ -24,6 +24,10 @@ public class Room {
         return height;
     }
 
+    public Snake getSnake() {
+        return snake;
+    }
+
     public Mouse getMouse() {
         return mouse;
     }
@@ -54,34 +58,9 @@ public class Room {
     }
 
     public void print() {
-        int[][] matrix = new int[height][width];
-
-        for(int y = 0; y < matrix.length; y++) {
-            for (int x = 0; x < matrix[y].length; x++) {
-                if (y == snake.getY() && x == snake.getX())
-                    matrix[y][x] = 1;
-                else if (y == mouse.getY() && x == mouse.getX())
-                    matrix[y][x] = 3;
-                else
-                    matrix[y][x] = 0;
-            }
-        }
-
-        for (int i = 1; i < snake.getSections().size(); i++)
-            matrix[snake.getSections().get(i).getY()][snake.getSections().get(i).getX()] = 2;
-
-        for(int y = 0; y < matrix.length; y++) {
-            for (int x = 0; x < matrix[y].length; x++) {
-                if (matrix[y][x] == 0)
-                    System.out.print(".");
-                else if (matrix[y][x] == 1)
-                    System.out.print("O");
-                else if (matrix[y][x] == 2)
-                    System.out.print("o");
-                else
-                    System.out.print("m");
-            }
-            System.out.println();
+        if (KeyboardObserver.frame!=null) {
+            KeyboardObserver.frame.setContentPane(new Layer());
+            KeyboardObserver.frame.setVisible(true);
         }
     }
 
@@ -110,8 +89,8 @@ public class Room {
     }
 
     public static void main(String[] args) {
-        Snake snake = new Snake(new Random().nextInt(40), new Random().nextInt(10));
-        game = new Room(40, 10, snake);
+        Snake snake = new Snake(new Random().nextInt(40), new Random().nextInt(40));
+        game = new Room(40, 40, snake);
         snake.setDirection(Direction.values()[new Random().nextInt(3)]);
         game.createMouse();
         game.run();
